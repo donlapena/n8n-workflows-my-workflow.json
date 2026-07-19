@@ -1,0 +1,21 @@
+{
+  "name": "USTP Medicine Telegram Bot",
+  "nodes": [
+    {"parameters":{"updates":["message"],"additionalFields":{}},"id":"1c818e79-ff88-4058-897f-e3d8d31fed61","name":"Telegram Trigger","type":"n8n-nodes-base.telegramTrigger","typeVersion":1.3,"position":[240,304],"webhookId":"89f04d2f-dca7-4b5d-9234-ff9dba091aad"},
+    {"parameters":{"promptType":"define","text":"={{ $('Telegram Trigger').item.json.message.text }}","options":{"systemMessage":"You are a helpful assistant for USTP College of Medicine students. Answer questions about scholarships and laboratory requirements based on the following information:\n\nSCHOLARSHIP QUESTIONS:\n1. Q: What scholarships are available in USTP for the college of medicine?\n   A: The following scholarships are available: Latin Honors, CHED MSRS, and Bukidnon Scholarship (if you are living in Bukidnon).\n\n2. Q: Who can I contact?\n   A: Please contact the email address comadmissions@ustp.edu.ph\n\n3. Q: What are the basic requirements to prepare?\n   A: You need to prepare the following: ITR (Income Tax Return), TOR (Transcript of Records), and Acceptance letter from the school.\n\nLABORATORY QUESTIONS:\n1. Q: What do I need to bring on my first histology session?\n   A: Bring colored pencils.\n\n2. Q: What are the rules and regulations that need to be observed in the lab at all times?\n   A: The following rules must be observed: No eating in the laboratory, keep quiet, and clean as you go.\n\nProvide clear, concise answers based on this information. If a question is not covered in the information above, politely inform the student that you can only answer questions about USTP Medicine scholarships and laboratory requirements."}},"id":"9e044e60-11d2-4ada-ba54-99712d7adc98","name":"USTP Medicine Assistant","type":"@n8n/n8n-nodes-langchain.agent","typeVersion":3.1,"position":[464,304]},
+    {"parameters":{"sessionIdType":"customKey","sessionKey":"={{ $('Telegram Trigger').item.json.message.chat.id }}","contextWindowLength":50},"id":"15de7088-ad80-4ad2-84a8-7096f5d4496f","name":"Chat Memory","type":"@n8n/n8n-nodes-langchain.memoryBufferWindow","typeVersion":1.4,"position":[720,480]},
+    {"parameters":{"chatId":"={{ $('Telegram Trigger').item.json.message.chat.id }}","text":"={{ $json.output }}","additionalFields":{}},"id":"5f6848f4-4e30-4549-aa3f-7915189d1ead","name":"Send Response","type":"n8n-nodes-base.telegram","typeVersion":1.2,"position":[816,304],"webhookId":"0667ccca-5bbd-4896-9576-b6502923458a"},
+    {"parameters":{"content":"Step 1:\n\n- Student sends a message via Telegram.\n\n- The message is received by the Telegram Trigger.","height":144},"type":"n8n-nodes-base.stickyNote","position":[16,272],"typeVersion":1,"id":"301ef39e-67b2-4d53-b3f5-6fb71afd0b8f","name":"Sticky Note"},
+    {"parameters":{"content":"Step 2:\n\n- The OpenAI Assistant processes the inquiry using its configured knowledge base and conversation memory.\n\n- The chatbot generates an accurate, concise response.","height":208,"width":256,"color":5},"type":"n8n-nodes-base.stickyNote","position":[432,416],"typeVersion":1,"id":"67c72396-49d1-4def-bee8-a9841ed9f44f","name":"Sticky Note1"},
+    {"parameters":{"content":"Step 3: \n\n- The reply is sent back to the student through Telegram. ","color":4},"type":"n8n-nodes-base.stickyNote","position":[1008,288],"typeVersion":1,"id":"2c48a0df-f9d7-43e5-8273-5b829ad84f22","name":"Sticky Note2"},
+    {"parameters":{"model":"openai/gpt-oss-120b","options":{}},"type":"@basetenlabs/n8n-nodes-baseten.lmChatBaseten","typeVersion":1,"position":[336,496],"id":"01bf91ac-714a-4c79-bcfc-5ab7b4974eea","name":"Baseten Chat Model"}
+  ],
+  "connections": {
+    "Telegram Trigger":{"main":[[{"node":"USTP Medicine Assistant","type":"main","index":0}]]},
+    "USTP Medicine Assistant":{"main":[[{"node":"Send Response","type":"main","index":0}]]},
+    "Chat Memory":{"ai_memory":[[{"node":"USTP Medicine Assistant","type":"ai_memory","index":0}]]},
+    "Baseten Chat Model":{"ai_languageModel":[[{"node":"USTP Medicine Assistant","type":"ai_languageModel","index":0}]]}
+  },
+  "settings": {"executionOrder":"v1"},
+  "pinData": {}
+}

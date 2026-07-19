@@ -1,0 +1,12 @@
+{
+  "name": "Section 1 - Academy Registration",
+  "nodes": [
+    {"parameters":{},"type":"n8n-nodes-base.manualTrigger","typeVersion":1,"position":[0,0],"id":"2cf5440f-93df-421d-a86e-302ec1ced70e","name":"TriggerManual"},
+    {"parameters":{"url":"https://learn.app.n8n.cloud/webhook/course/foundations/register","authentication":"genericCredentialType","genericAuthType":"httpHeaderAuth","sendQuery":true,"queryParameters":{"parameters":[{"name":"assessment_id","value":"aa8503105d77249d61f0ea1276213f30"},{"name":"workflow_name","value":"Section 1 - Academy Registration"},{"name":"tag","value":"foundations-course"}]},"options":{}},"type":"n8n-nodes-base.httpRequest","typeVersion":4.4,"position":[208,0],"id":"88da582b-89f4-432d-9fb2-40e629a6ca8a","name":"SubmitRegistration"}
+  ],
+  "connections": {
+    "TriggerManual":{"main":[[{"node":"SubmitRegistration","type":"main","index":0}]]}
+  },
+  "settings": {"executionOrder":"v1"},
+  "pinData": {}
+}
